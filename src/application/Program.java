@@ -28,16 +28,13 @@ public class Program {
             checkIn = LocalDate.parse(sc.next(), dtf);
             IO.print("Data de Saída: ");
             checkOut = LocalDate.parse(sc.next(), dtf);
-            LocalDate now = LocalDate.now();
-            if (checkIn.isBefore(now) ||  checkOut.isBefore(now)) {
-                IO.print("Erro na reserva: as datas da reserva para atualização devem ser datas futuras.");
-            } else if (checkOut.isBefore(checkIn)) {
-                IO.println("Erro na reserva: a data de check-out deve ser posterior à data de check-in.");
+
+            String error = reservation.updateDates(checkIn, checkOut);
+            if (error != null) {
+                IO.println("Erro na reserva: " + error);
             } else {
-                reservation.updateDates(checkIn, checkOut);
                 IO.println(reservation);
             }
-
         }
 
 
