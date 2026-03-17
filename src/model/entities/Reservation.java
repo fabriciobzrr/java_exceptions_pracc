@@ -16,7 +16,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Integer roomNumber, LocalDate checkIn, LocalDate checkOut) {
+    public Reservation(Integer roomNumber, LocalDate checkIn, LocalDate checkOut) throws DomainException {
         if (checkOut.isBefore(checkIn)) {
             throw new DomainException("a data de check-out deve ser posterior à data de check-in.");
         }
@@ -45,7 +45,7 @@ public class Reservation {
         return ChronoUnit.DAYS.between(checkIn, checkOut);
     }
 
-    public void updateDates(LocalDate checkIn, LocalDate checkOut) {
+    public void updateDates(LocalDate checkIn, LocalDate checkOut) throws DomainException {
         LocalDate now = LocalDate.now();
 
         if (checkIn.isBefore(now) ||  checkOut.isBefore(now)) {
