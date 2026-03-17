@@ -1,5 +1,7 @@
 package model.entities;
 
+import model.exceptions.DomainException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -15,6 +17,9 @@ public class Reservation {
     }
 
     public Reservation(Integer roomNumber, LocalDate checkIn, LocalDate checkOut) {
+        if (checkOut.isBefore(checkIn)) {
+            throw new DomainException("a data de check-out deve ser posterior à data de check-in.");
+        }
         this.roomNumber = roomNumber;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -40,20 +45,19 @@ public class Reservation {
         return ChronoUnit.DAYS.between(checkIn, checkOut);
     }
 
-    public String updateDates(LocalDate checkIn, LocalDate checkOut) {
+    public void updateDates(LocalDate checkIn, LocalDate checkOut) {
         LocalDate now = LocalDate.now();
 
         if (checkIn.isBefore(now) ||  checkOut.isBefore(now)) {
-            return "as datas da reserva para atualização devem ser datas futuras.";
+            throw new DomainException("as datas da reserva para atualização devem ser datas futuras.");
         }
 
         if (checkOut.isBefore(checkIn)) {
-            return "a data de check-out deve ser posterior à data de check-in.";
+            throw new DomainException("a data de check-out deve ser posterior à data de check-in.");
         }
 
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        return null;
     }
 
     @Override
